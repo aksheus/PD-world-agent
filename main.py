@@ -43,8 +43,10 @@ def Q_learning(robo,alpha=0.5,iterations=10000,policy='PRandom',special=False): 
 	if policy=='PRandom':
 		for _ in range(iterations):
 			if robo.goalStateCheck():
+				print('hey we got here')
 				robo.goal_counter+=1
 				if robo.goal_counter==4:
+					print('hey we got here 4 times')
 					return
 				robo.state=[robo.robos_position[0],robo.robos_position[1],0,5,5,5,0,0,0]
 				robo.robo_scope=[]
@@ -140,6 +142,7 @@ def Q_learning(robo,alpha=0.5,iterations=10000,policy='PRandom',special=False): 
 	return
 
 def visualize(which_button):
+	global Q
 	if which_button==1:
 		Q_learning(r,0.3,10000,'PRandom')
 		clear_Q()
