@@ -2,6 +2,7 @@ from RobotAgent import RobotAgent
 from random import choice,random
 from operator import itemgetter
 import sys
+from MainMenu import Mainmenu
 #this code just initializes the global q matrix btw we are going with state space representation 2  50x4 in size
 # gonna use a dictionary for efficiency  .... key's are (i,j,x) tuples where i,j,x are the values in the problem speification ppt
 # i is x-coordinate of robot,  j is y-cordinate of robot, x is 1 if its holding a star or it is zero otherwise
@@ -138,22 +139,38 @@ def Q_learning(robo,alpha=0.5,iterations=10000,policy='PRandom',special=False): 
 			print('\n')
 	return
 
-if __name__=='__main__':
-	r=RobotAgent((1,5),[(1,1),(3,3),(5,5)],[(5,1),(5,3),(2,5)])
-	if sys.argv[1]=='experiment1':
+def visualize(which_button):
+	if which_button==1:
 		Q_learning(r,0.3,10000,'PRandom')
-	elif sys.argv[1]=='experiment2':
+		clear_Q()
+	elif which_button==2:
 		Q_learning(r,0.3,100,'PRandom')
 		Q_learning(r,0.3,9900,'PExploit1')
-	elif sys.argv[1]=='experiment3':
+		clear_Q()
+	elif which_button==3:
 		Q_learning(r,0.3,100,'PRandom')
 		Q_learning(r,0.3,9900,'PExploit2')
-	elif sys.argv[1]=='experiment4':
+		clear_Q()
+	elif which_button==4:
 		Q_learning(r,0.5,100,'PRandom')
 		Q_learning(r,0.5,9900,'PExploit2')
-	elif sys.argv[1]=='experiment5':
+		clear_Q()
+	elif which_button==5:
 		Q_learning(r,0.5,100,'PRandom') # need not worry,impossible to reach terminal state twice need minimum of 124 iterations best case
 		Q_learning(r,0.5,9900,'PExploit2',True)
-	elif sys.argv[1]=='experiment6':
+		clear_Q()
+	elif which_button==6:
 		Q_learning(r,0.5,100,'PRandom')
 		Q_learning(r,0.5,9900,'PExploit1',True)
+		clear_Q()
+	 
+if __name__=='__main__':
+	r=RobotAgent((1,5),[(1,1),(3,3),(5,5)],[(5,1),(5,3),(2,5)])
+	mm=Mainmenu('PD-World Agent','600x600')
+	mm.addButton('Visualize experiment 1',lambda: visualize(1))
+	mm.addButton('Visualize experiment 2',lambda: visualize(2))
+	mm.addButton('Visualize experiment 3',lambda: visualize(3))
+	mm.addButton('Visualize experiment 4',lambda: visualize(4))
+	mm.addButton('Visualize experiment 5',lambda: visualize(5))
+	mm.addButton('Visualize experiment 6',lambda: visualize(6))
+	mm.game_board.mainloop()

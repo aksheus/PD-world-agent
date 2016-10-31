@@ -18,8 +18,11 @@ class Mainmenu:
         self.buttons[-1].place(x=self.butt_coords[0],y=self.butt_coords[1])
         self.butt_coords[1]+=60
 
-""" def f():
+"""def f():
     print('works')
+
+def drawGrid(parent,):
+    pass
 
 if __name__=="__main__":
     mm=Mainmenu('PD-World Agent','600x600')
@@ -29,6 +32,8 @@ if __name__=="__main__":
     mm.addButton('Visualize experiment 4',f)
     mm.addButton('Visualize experiment 5',f)
     mm.addButton('Visualize experiment 6',f)
+    lis=[ b.cget('command') for b in mm.buttons]
+    print('\n'.join(x for x in lis))
     mm.game_board.mainloop() """
     
 
