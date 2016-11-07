@@ -1,3 +1,4 @@
+from collections import deque
 class RobotAgent:
 	"""
 	   maintains state of pd world  and provides methods to update pd world
@@ -25,6 +26,8 @@ class RobotAgent:
 		self.adj_move=[(1,0,'d'),(0,1,'r'),(-1,0,'u'),(0,-1,'l')] # this is just to calculate robots neighbouring coordinates
 		self.robo_scope=[]
 		self.goal_counter=0
+		self.blocks_delivered=0
+		self.blocks_delivered_forty=deque([],maxlen=40)
 	
 	def possibleMoves(self):
 		""" sees what possible squares the robo can move to legally
@@ -53,7 +56,10 @@ class RobotAgent:
 				if d<5: # the drop off cell can't hold more than 5
 					self.state[self.dropoffCells.index(dropoff_cell)+6]+=1
 					self.state[2]=0 #updating carry flag
+					self.blocks_delivered+=1
+					self.blocks_delivered_forty.append(1)
 					return True
+		self.blocks_delivered_forty.append(0)
 		return False
 
 	def goalStateCheck(self): #returns true if goal state is reached otherwise false
