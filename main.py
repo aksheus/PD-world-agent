@@ -44,6 +44,13 @@ def clear_Q():
 	for x,y,z in m:
 		Q[(x,y,z)]=[0,0,0,0,0,0]
 
+def print_Q():
+	global m
+	global Q
+	for x,y,z in m:
+		print('( {} , {} , {} ) : {}'.format(x,y,z,Q[(x,y,z)]))
+		print('\n')
+
 def Q_learning(robo,alpha=0.5,iterations=10000,policy='PRandom',special=False):  # implements q - learning algorithm
 	"""
 		Q(a,s) <-- (1-alpha)*Q(a,s)+ alpha*[R(s',a,s)+ gamma*max(Q(a',s'))] """
@@ -82,9 +89,9 @@ def Q_learning(robo,alpha=0.5,iterations=10000,policy='PRandom',special=False): 
 				Q[s][2]= (1-alpha)*Q[s][2] + alpha*(R(did_we_pickup,did_we_drop)+gamma*(max(Q[(ns)][x] for x in range(6))))
 			elif move[2]=='d':
 				Q[s][3]= (1-alpha)*Q[s][3] + alpha*(R(did_we_pickup,did_we_drop)+gamma*(max(Q[(ns)][x] for x in range(6))))
-			print(s)
-			print(Q[s])
-			print('\n')
+			#print(s)
+			#print(Q[s])
+			#print('\n')
 	elif policy=='PExploit1':
 		for _ in range(iterations):
 			if robo.goalStateCheck():
@@ -196,6 +203,7 @@ def visualize(which_button):
 		print(r.blocks_delivered)
 		print(sum(e for e in r.blocks_delivered_forty))
 		counters[0]+=1
+		print_Q()
 		clear_Q()
 		print('how many times we scored goals : {}'.format(r.goal_counter))
 		del r
