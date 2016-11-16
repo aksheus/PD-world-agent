@@ -1,3 +1,4 @@
+from collections import deque
 class RobotAgent:
 	"""
 	   maintains state of pd world  and provides methods to update pd world
@@ -24,6 +25,9 @@ class RobotAgent:
 		# this state attribute reperesents current state and must be updated accordingly
 		self.adj_move=[(1,0,'d'),(0,1,'r'),(-1,0,'u'),(0,-1,'l')] # this is just to calculate robots neighbouring coordinates
 		self.robo_scope=[]
+		self.goal_counter=0
+		self.blocks_delivered=0
+		self.blocks_delivered_forty=deque([],maxlen=40)
 	
 	def possibleMoves(self):
 		""" sees what possible squares the robo can move to legally
@@ -36,32 +40,26 @@ class RobotAgent:
 					self.robo_scope.append(temp)
 
 	def doPickup(self,pickup_cell): #provide the pickup cell returns true if we did pick up !!
-		print('entered dopickup in robot agnet')
 		if (self.state[0],self.state[1])==pickup_cell: #check wether the agent is on the pickup cell
-			print('got thru the robot current position check')
 			if pickup_cell in self.pickupCells and self.state[2]==0: # is the agent is not carrying a star, is the pickup cell indeed a pickupcell
-				print('got thru the second check')
 				p=self.state[self.pickupCells.index(pickup_cell)+3]
 				if p>0: # the pickup cell must have atleast one star
-					print('got thru pick up cell not empty check')
 					self.state[self.pickupCells.index(pickup_cell)+3]-=1
 					self.state[2]=1 # updating carry flag
 					return True 
 		return False
 
 	def doDropoff(self,dropoff_cell): # provide pick up cell as tuple returns true if drop off is successful
-		print('\n')
-		print('entered do dropoff in robot agnet')
 		if (self.state[0],self.state[1])==dropoff_cell: # is the robo on the drop off cell
-			print('got thru cur pos of robo check')
 			if dropoff_cell in self.dropoffCells and self.state[2]==1: # is the robo carrying a star , is the cell indeed a dropoff cell
-				print('got thru the second check in dropoff')
 				d=self.state[self.dropoffCells.index(dropoff_cell)+6]
 				if d<5: # the drop off cell can't hold more than 5
-					print('got thru drop of full check')
 					self.state[self.dropoffCells.index(dropoff_cell)+6]+=1
 					self.state[2]=0 #updating carry flag
+					self.blocks_delivered+=1
+					self.blocks_delivered_forty.append(1)
 					return True
+		self.blocks_delivered_forty.append(0)
 		return False
 
 	def goalStateCheck(self): #returns true if goal state is reached otherwise false
