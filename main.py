@@ -111,7 +111,7 @@ def Q_learning(robo,alpha=0.5,iterations=10000,policy='PRandom',special=False): 
 		for j in range(iterations):
 			if (j+1)%100==0:
 				if (j+1)<2001:
-					print_Q(j+1)
+					print_Q(j+1+100)
 			if robo.goalStateCheck():
 				print_Q(j+1,True)
 				robo.goal_counter+=1
@@ -199,8 +199,9 @@ def Q_learning(robo,alpha=0.5,iterations=10000,policy='PRandom',special=False): 
 				Q[s][2]= (1-alpha)*Q[s][2] + alpha*(R(did_we_pickup,did_we_drop)+gamma*(max(Q[(ns)][x] for x in range(6))))
 			elif move[2]=='d':
 				Q[s][3]= (1-alpha)*Q[s][3] + alpha*(R(did_we_pickup,did_we_drop)+gamma*(max(Q[(ns)][x] for x in range(6))))
-	print_Q(10000)
-	return
+	if iterations==9900:
+			print_Q(10000)
+	return 
 
 def visualize(which_button):
 	global Q,counters,get_seed,bank_account,bank_account_forty
@@ -231,6 +232,7 @@ def visualize(which_button):
 			print('Experiment 2		run: {}		seed: {}'.format(counters[1]+1,seed_used),file=op_file)
 		Q_learning(r,0.3,100,'PRandom')
 		Q_learning(r,0.3,9900,'PExploit1')
+
 		#print(bank_account)
 		#print(sum(elem for elem in bank_account_forty))
 		#print(r.blocks_delivered)
@@ -324,3 +326,4 @@ if __name__=='__main__':
 	mm.addButton('Run Experiment 5',lambda: visualize(5))
 	mm.addButton('Run Experiment 6',lambda: visualize(6))
 	mm.game_board.mainloop()
+	
